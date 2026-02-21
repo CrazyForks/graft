@@ -2881,9 +2881,9 @@ dependencies = [
 
 [[package]]
 name = "sqlite-plugin"
-version = "0.5.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c8418de47f616a662aec91023fa5a3b4f1b1f3ca017ce98253e42721c16661b"
+checksum = "02587b765525f8a39cfb1b0ab32cd0a424ee43c2f1042c62dc0a15cecb7ec4a2"
 dependencies = [
  "bindgen",
 ]

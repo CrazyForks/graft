@@ -17,6 +17,7 @@ pub trait VfsFile: Debug {
 
     fn lock(&mut self, level: LockLevel) -> Result<(), ErrCtx>;
     fn unlock(&mut self, level: LockLevel) -> Result<(), ErrCtx>;
+    fn check_reserved_lock(&mut self) -> Result<bool, ErrCtx>;
 
     fn file_size(&mut self) -> Result<usize, ErrCtx>;
     fn truncate(&mut self, size: usize) -> Result<(), ErrCtx>;

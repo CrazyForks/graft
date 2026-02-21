@@ -36,6 +36,10 @@ impl VfsFile for MemFile {
         Ok(())
     }
 
+    fn check_reserved_lock(&mut self) -> Result<bool, ErrCtx> {
+        Ok(false)
+    }
+
     fn file_size(&mut self) -> Result<usize, ErrCtx> {
         Ok(self.data.len())
     }

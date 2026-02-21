@@ -232,6 +232,11 @@ impl Vfs for GraftVfs {
         ErrCtx::wrap(move || handle.unlock(level))
     }
 
+    fn check_reserved_lock(&self, handle: &mut Self::Handle) -> VfsResult<bool> {
+        tracing::trace!("check_reserved_lock: file={handle:?}");
+        ErrCtx::wrap(move || handle.check_reserved_lock())
+    }
+
     fn file_size(&self, handle: &mut Self::Handle) -> VfsResult<usize> {
         tracing::trace!("file_size: handle={handle:?}");
         ErrCtx::wrap(move || handle.file_size())

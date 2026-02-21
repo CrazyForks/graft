@@ -280,6 +280,10 @@ impl VfsFile for VolFile {
         Ok(())
     }
 
+    fn check_reserved_lock(&mut self) -> Result<bool, ErrCtx> {
+        Ok(self.reserved.is_locked())
+    }
+
     fn file_size(&mut self) -> Result<usize, ErrCtx> {
         Ok(PAGESIZE.as_usize() * self.page_count()?.to_usize())
     }
