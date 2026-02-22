@@ -8,7 +8,7 @@ use futures::{
     stream::{self, FuturesOrdered},
 };
 use opendal::{
-    Buffer, ErrorKind, Operator,
+    ErrorKind, Operator,
     layers::{HttpClientLayer, RetryLayer},
     options::{ReadOptions, WriteOptions},
     raw::HttpClient,
@@ -129,7 +129,7 @@ impl Remote {
                     // enable hickory DNS resolver for DNS caching
                     .hickory_dns(true)
                     .connect_timeout(Duration::from_secs(5))
-                    .timeout(Duration::from_secs(60))
+                    .tcp_user_timeout(Duration::from_secs(60))
                     .build()?;
 
                 Operator::new(builder)?
@@ -218,18 +218,18 @@ impl Remote {
         chunks: I,
     ) -> Result<()> {
         let path = RemotePath::Segment(sid).build();
-        let buffer = Buffer::from_iter(chunks);
-        tracing::Span::current().record("size", buffer.len());
-        self.store
-            .write_options(
-                &path,
-                buffer,
-                WriteOptions {
-                    concurrent: REMOTE_CONCURRENCY,
-                    ..WriteOptions::default()
-                },
-            )
+        let mut w = self
+            .store
+            .writer_with(&path)
+            .concurrent(REMOTE_CONCURRENCY)
             .await?;
+        let mut size = 0;
+        for chunk in chunks {
+            size += chunk.len();
+            w.write(chunk).await?;
+        }
+        tracing::Span::current().record("size", size);
+        w.close().await?;
         Ok(())
     }
 

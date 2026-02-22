@@ -10,9 +10,9 @@ just run sqlite shell --release --client f1
 
 ```sql
 -- volume on s3
-pragma graft_clone = '5rMJiBh2yA-2duiKapixrzr5';
+pragma graft_clone = '74ggoCYV4P-2r2cmkXpB2nJ5';
 -- volume on fs
-pragma graft_clone = '5rMJiK5qTN-2e3L1vhNrUdbg';
+pragma graft_clone = '74ggoDeWBQ-2o7qkWGgrdYDn.';
 
 pragma graft_pull;
 pragma graft_push;
@@ -24,7 +24,7 @@ pragma graft_audit;
 SELECT SUM(balance) FROM accounts;
 
 -- transfer $10 from account 1 to account 2
-INSERT INTO ledger (account_id, amount) VALUES (1, -10), (2, 10);
+INSERT INTO ledger (account_id, amount) VALUES (1, 10), (2, -10);
 
 -- get the balance of account 1 and 2
 SELECT * FROM accounts WHERE id IN (1, 2);
